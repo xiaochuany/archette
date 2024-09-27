@@ -5,4 +5,5 @@ d = { 'settings': { 'branch': 'main',
                 'doc_host': 'https://xiaochuany.github.io',
                 'git_url': 'https://github.com/xiaochuany/archette',
                 'lib_path': 'archette'},
-  'syms': {'archette.core': {'archette.core.foo': ('core.html#foo', 'archette/core.py')}}}
+  'syms': { 'archette.core': { 'archette.core.f': ('core.html#f', 'archette/core.py'),
+                               'archette.core.foo': ('core.html#foo', 'archette/core.py')}}}
