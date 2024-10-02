@@ -5,5 +5,9 @@ d = { 'settings': { 'branch': 'main',
                 'doc_host': 'https://xiaochuany.github.io',
                 'git_url': 'https://github.com/xiaochuany/archette',
                 'lib_path': 'archette'},
-  'syms': { 'archette.core': { 'archette.core.foo': ('core.html#foo', 'archette/core.py'),
-                               'archette.core.g': ('core.html#g', 'archette/core.py')}}}
+  'syms': { 'archette.core': { 'archette.core.GARCHETTE': ('core.html#garchette', 'archette/core.py'),
+                               'archette.core.GARCHETTE.__init__': ('core.html#garchette.__init__', 'archette/core.py'),
+                               'archette.core.GARCHETTE.fit': ('core.html#garchette.fit', 'archette/core.py'),
+                               'archette.core.GARCHETTE.simulate': ('core.html#garchette.simulate', 'archette/core.py'),
+                               'archette.core.GARCHETTE.std_resid': ('core.html#garchette.std_resid', 'archette/core.py'),
+                               'archette.core.GARCHETTE.vs': ('core.html#garchette.vs', 'archette/core.py')}}}
