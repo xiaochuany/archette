@@ -8,6 +8,10 @@ d = { 'settings': { 'branch': 'main',
   'syms': { 'archette.core': { 'archette.core.GARCHETTE': ('core.html#garchette', 'archette/core.py'),
                                'archette.core.GARCHETTE.__init__': ('core.html#garchette.__init__', 'archette/core.py'),
                                'archette.core.GARCHETTE.fit': ('core.html#garchette.fit', 'archette/core.py'),
+                               'archette.core.GARCHETTE.forecast_vs': ('core.html#garchette.forecast_vs', 'archette/core.py'),
                                'archette.core.GARCHETTE.simulate': ('core.html#garchette.simulate', 'archette/core.py'),
-                               'archette.core.GARCHETTE.std_resid': ('core.html#garchette.std_resid', 'archette/core.py'),
-                               'archette.core.GARCHETTE.vs': ('core.html#garchette.vs', 'archette/core.py')}}}
+                               'archette.core.GARCHETTE.std_resids': ('core.html#garchette.std_resids', 'archette/core.py'),
+                               'archette.core.GARCHETTE.vs': ('core.html#garchette.vs', 'archette/core.py'),
+                               'archette.core._get_vs': ('core.html#_get_vs', 'archette/core.py'),
+                               'archette.core._make_fcst_vs': ('core.html#_make_fcst_vs', 'archette/core.py'),
+                               'archette.core._simulate': ('core.html#_simulate', 'archette/core.py')}}}
