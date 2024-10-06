@@ -52,39 +52,42 @@ $$
 mod.params
 ```
 
-    array([0.41124553, 0.        , 0.31705585])
+    array([3.53477729e-03, 1.16474111e-12, 9.99999999e-01])
 
 The conditional variance of the fit model is computed by the recursion
+
 $$
 \begin{equation}
 \hat{\sigma}_t^2 = \hat{\omega} + \hat{\alpha} + \hat{\beta} \hat{\sigma}_{t-1}^2
 \end{equation}
-$$ which depends entirely on the unobserved $\sigma_0^2$. The model sets
-a sensible default value for it.
+$$
+
+which depends entirely on the unobserved $\sigma_0^2$. The model sets a
+sensible default value for it.
 
 ``` python
 mod.vs
 ```
 
-    array([0.60808129, 0.60404127, 0.60276035, 0.60235423, 0.60222547,
-           0.60218464, 0.6021717 , 0.60216759, 0.60216629, 0.60216588,
-           0.60216575, 0.60216571, 0.60216569, 0.60216569, 0.60216569,
-           0.60216569, 0.60216569, 0.60216569, 0.60216569, 0.60216569])
+    array([0.87484097, 0.87837574, 0.88191052, 0.8854453 , 0.88898007,
+           0.89251485, 0.89604963, 0.8995844 , 0.90311918, 0.90665395,
+           0.91018873, 0.91372351, 0.91725828, 0.92079306, 0.92432784,
+           0.92786261, 0.93139739, 0.93493217, 0.93846694, 0.94200172])
 
-The standardised residual is deduced from the conditional variance $$
-\begin{equation}
+The standardised residual is deduced from the conditional variance
+
+$$
 r_t = \frac{y_t}{\hat{\sigma}_t}
-\end{equation}
 $$
 
 ``` python
 mod.std_resids
 ```
 
-    array([-1.17812072, -0.99035699, -0.22087847,  0.38903965, -1.19532934,
-           -0.14457363, -1.43213792,  1.72189974, -0.41315769, -0.11995525,
-            2.35278337,  0.22319601, -0.3727941 ,  1.56851779, -0.34142197,
-            0.43569726, -0.89645315,  0.58623321,  1.10074337,  0.15922077])
+    array([ 0.62885304,  0.92687193, -0.74230796,  1.89461301,  0.14705346,
+           -0.2527923 ,  0.99041857,  0.67073369,  1.2168398 ,  0.89108207,
+           -1.63655212, -0.69107348, -0.51659492, -1.21672958,  0.78484646,
+           -0.24441403, -1.20978739, -0.72337278, -0.75813741,  1.50086911])
 
 Finally, one can forecast the condtional variance and simulate the
 process with the fit parameters with a given horizon
@@ -93,11 +96,11 @@ process with the fit parameters with a given horizon
 mod.forecast_vs(horizon=5)
 ```
 
-    array([0.60216569, 0.60216569, 0.60216569, 0.60216569, 0.60216569])
+    array([0.9455365 , 0.94907127, 0.95260605, 0.95614083, 0.9596756 ])
 
 ``` python
 mod.simulate(horizon=5, method="bootstrap", n_rep=2, seed=1)
 ```
 
-    array([[-0.11218818,  0.17319862, -0.28928574, -0.32060762, -0.09308448],
-           [ 0.17319862, -0.11218818,  0.33809818, -0.91421385, -0.69564168]])
+    array([[-0.24581195, -0.67324578, -0.50420459,  1.18985581,  0.87293103],
+           [-0.67199087, -0.24627099, -0.23855186,  0.61490793, -1.18514443]])
