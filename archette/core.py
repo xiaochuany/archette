@@ -21,10 +21,10 @@ CONSTRAINT = {
 
 # %% ../nbs/00_core.ipynb 5
 # @njit
-def _get_vs(y, params, sig2_init=1.0):
+def _get_vs(y, params, sig2_init):
     """
     not clear how arch package initialize the conditional variance at time 0
-    here kick off the computation with value 1.0
+    seems very close to be the sample variance of y;
     it is provably true that vs computed below
     is insensitive to the initial value (coupling exponentially fast)
     """
@@ -81,13 +81,13 @@ class GARCHETTE:
         """fit y to garch"""
         self._y = y
         res = arch_model(y, mean="Zero", rescale=False).fit(disp="off")
-        self._v_init = res.conditional_volatility[0]**2
+        self._v_init = y.var() # != res.conditional_volatility[0]**2 but close 
         func = self.nll
-        self._params = minimize(func, x0=( self._v_init * 0.4 ,0.3,0.3), 
+        self.params = minimize(func, x0=(self._v_init * 0.4,0.3,0.3), 
          bounds=[(0,None), (0,None), (0,None)],
          constraints= CONSTRAINT
          ).x
-        self.params = res.params.values # (om, al, be)
+        self._params = res.params.values # (om, al, be) typically != self.params
         self._is_fit = True
         return self
 
