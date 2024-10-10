@@ -1,0 +1,42 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "archette",
+    "section": "",
+    "text": "GARCHETTE is a minimal implementation of the GARCH(1,1) model with zero mean and Gaussian noise.",
+    "crumbs": [
+      "archette"
+    ]
+  },
+  {
+    "objectID": "index.html#usage",
+    "href": "index.html#usage",
+    "title": "archette",
+    "section": "Usage",
+    "text": "Usage\n\nInstallation\nInstall latest from the GitHub repository:\n$ pip install git+https://github.com/xiaochuany/archette.git\n\n\nDocumentation\nDocumentation can be found hosted on this GitHub repository’s pages.",
+    "crumbs": [
+      "archette"
+    ]
+  },
+  {
+    "objectID": "index.html#how-to-use",
+    "href": "index.html#how-to-use",
+    "title": "archette",
+    "section": "How to use",
+    "text": "How to use\n\nimport numpy as np\nfrom archette import GARCHETTE\n\n\ny = np.random.randn(20)\nmod = GARCHETTE()\nmod.fit(y)\n\n&lt;archette.core.GARCHETTE&gt;\n\n\nOne can get inspect the fit params: a triplet of omega, alpha and beta as in\n\\[\n\\begin{align*}\nY_t &= \\sigma_t W_t \\\\\n\\sigma_t^2 &=  \\omega + \\alpha Y_{t-1}^2 + \\beta \\sigma^2_{t-1}\n\\end{align*}\n\\]\n\nmod.params\n\narray([1.46162489e+00, 0.00000000e+00, 4.34165554e-16])\n\n\nThe conditional variance of the fit model is computed by the recursion\n\\[\n\\hat{\\sigma}_t^2 = \\hat{\\omega} + \\hat{\\alpha} + \\hat{\\beta} \\hat{\\sigma}_{t-1}^2\n\\]\nwhich depends entirely on the unobserved \\(\\sigma_0^2\\). The model sets a sensible default value for it.\n\nmod.vs\n\narray([1.6637509 , 1.46162489, 1.46162489, 1.46162489, 1.46162489,\n       1.46162489, 1.46162489, 1.46162489, 1.46162489, 1.46162489,\n       1.46162489, 1.46162489, 1.46162489, 1.46162489, 1.46162489,\n       1.46162489, 1.46162489, 1.46162489, 1.46162489, 1.46162489])\n\n\nThe standardised residual is deduced from the conditional variance\n\\[\nr_t = \\frac{y_t}{\\hat{\\sigma}_t}\n\\]\n\nmod.std_resids\n\narray([ 1.83606806,  0.40202783, -0.05913285, -0.47174874, -0.59056739,\n       -2.20575562,  0.71528908,  0.26541164, -0.20129438,  1.33214741,\n       -0.50849529,  0.2951227 , -0.84969512,  1.53542218,  0.44267321,\n       -1.95023795, -1.68947028, -0.23377285, -0.18693467,  0.7959041 ])\n\n\nFinally, one can forecast the condtional variance and simulate the process with the fit parameters with a given horizon\n\nmod.forecast_vs(horizon=5)\n\narray([1.46162489, 1.46162489, 1.46162489, 1.46162489, 1.46162489])\n\n\n\nmod.simulate(horizon=5, method=\"bootstrap\", n_rep=2, seed=1)\n\narray([[-2.66670736,  0.35679649, -1.02726169, -0.24336023,  1.61053531],\n       [ 0.35679649, -2.66670736, -2.35779243,  2.21976368, -2.04253036]])",
+    "crumbs": [
+      "archette"
+    ]
+  },
+  {
+    "objectID": "core.html",
+    "href": "core.html",
+    "title": "core",
+    "section": "",
+    "text": "source\n\nGARCHETTE\n\n GARCHETTE ()\n\nsimple garch model\n\nsource\n\n\nGARCHETTE.fit\n\n GARCHETTE.fit (y:numpy.ndarray)\n\nfit y to garch\n\nsource\n\n\nGARCHETTE.vs\n\n GARCHETTE.vs ()\n\nproperty: estimated conditional variance, same shape as y\n\nsource\n\n\nGARCHETTE.nll\n\n GARCHETTE.nll (params)\n\nnegative log likelihood of the series at the given params\n\nsource\n\n\nGARCHETTE.std_resids\n\n GARCHETTE.std_resids ()\n\nproperty: estimated standardized residual\n\nsource\n\n\nGARCHETTE.forecast_vs\n\n GARCHETTE.forecast_vs (horizon:int)\n\nforecast conditional variance in the horizon\n\nsource\n\n\nGARCHETTE.simulate\n\n GARCHETTE.simulate (horizon:int,\n                     method:Literal['bootstrap','simulate']='simulate',\n                     n_rep=1000, seed=42)\n\n\n\n\n\n\n\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\nhorizon\nint\n\npath length\n\n\nmethod\nLiteral\nsimulate\n“bootstrap” resamples from past std_resids; “simulate” simulates gaussian nosie\n\n\nn_rep\nint\n1000\nnumber of repetitions\n\n\nseed\nint\n42\n\n\n\nReturns\nndarray\n\n\n\n\n\n\ny = np.random.randn(600) * np.arange(600)\nmod = GARCHETTE().fit(y)\n\nThe model is mis-specified here. arch and archette leads to very different parameters estimates with similar loss.\n\nprint(f'parameter fit by achette {mod.params}: loss {mod.nll(mod.params)}')\nprint(f'parameter fit by arch    {mod._params}: loss {mod.nll(mod._params)}')\n\nparameter fit by achette [2.40340261e+02 1.70882588e-01 8.29117412e-01]: loss 7245.748491456419\nparameter fit by arch    [5.05115703e+01 4.71131405e-02 9.52886860e-01]: loss 7294.592377094637\n\n\nNow simulate a new path with mod.params as parameter. Both arch and archette leads to similar parameter estiamtes.\n\nyy = mod.simulate(600, n_rep=1).squeeze()\nmodyy = GARCHETTE().fit(yy)\n\n\nmodyy.params, modyy._params\n\n(array([2.82225128e+02, 1.74500078e-01, 8.17558089e-01]),\n array([2.65632412e+02, 1.49297143e-01, 8.36446771e-01]))",
+    "crumbs": [
+      "core"
+    ]
+  }
+]
