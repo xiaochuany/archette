@@ -10,7 +10,6 @@ from functools import cached_property
 from typing import Literal
 import numpy as np
 from numba import njit
-from arch import arch_model
 from scipy.optimize import minimize
 
 # %% ../nbs/00_core.ipynb 4
@@ -80,20 +79,20 @@ class GARCHETTE:
     def fit(self,y:np.ndarray):
         """fit y to garch"""
         self._y = y
-        res = arch_model(y, mean="Zero", rescale=False).fit(disp="off")
-        self._v_init = y.var() # != res.conditional_volatility[0]**2 but close 
+        self._v_init = y.var() # != arch_model(y).fit().conditional_volatility[0]**2 but close 
         func = self.nll
         self.params = minimize(func, x0=(self._v_init * 0.4,0.3,0.3), 
          bounds=[(0,None), (0,None), (0,None)],
-         constraints= CONSTRAINT
+         constraints= {
+            "type": "ineq",
+            "fun": lambda x: 1-x[1]-x[2]
+        }
          ).x
-        self._params = res.params.values # (om, al, be) typically != self.params
         self._is_fit = True
         return self
 
     def nll(self, params)-> float:
         """negative log likelihood of the series at the given params"""
-        # assert self._is_fit
         return _nllgauss(self._y, params, self._v_init)
 
     @property
