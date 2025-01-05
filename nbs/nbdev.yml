@@ -1,9 +1,0 @@
-project:
-  output-dir: _docs
-
-website:
-  title: "archette"
-  site-url: "https://xiaochuany.github.io/archette"
-  description: "tiny arch model"
-  repo-branch: main
-  repo-url: "https://github.com/xiaochuany/archette"
