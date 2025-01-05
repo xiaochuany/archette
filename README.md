@@ -1,6 +1,6 @@
 # archette
 
-GARCHETTE is a minimal implementation of the GARCH(1,1) model with zero
+GARCH is a minimal implementation of the GARCH(1,1) model with zero
 mean and Gaussian noise.
 
 ## Usage
@@ -99,3 +99,4 @@ mod.simulate(horizon=5, method="bootstrap", n_rep=2, seed=1)
 
     array([[-2.66670736,  0.35679649, -1.02726169, -0.24336023,  1.61053531],
            [ 0.35679649, -2.66670736, -2.35779243,  2.21976368, -2.04253036]])
+           
