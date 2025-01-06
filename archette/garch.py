@@ -66,16 +66,23 @@ def _simulate(
 
 
 class GARCH:
-    """simple garch model"""
+    """GARCH(1,1) model"""
 
     def __init__(self):
         self._y = None
-        self.params = None
+        self.params = None  # [omega, alpha, beta]
         self._is_fit = False
         self._v_init = None
 
-    def fit(self, y: np.ndarray):
-        """fit y to garch"""
+    def fit(self, y: np.ndarray) -> "GARCH":
+        """fit a GARCH(1,1) model with MLE (assuming Gaussian noise)
+
+        Parameters:
+            y: observed time series
+
+        Returns:
+            self
+        """
         self._y = y
         self._v_init = (
             y.var()
@@ -91,35 +98,69 @@ class GARCH:
         return self
 
     def nll(self, params: np.ndarray) -> float:
-        """negative log likelihood of the series at the given params"""
+        """negative log likelihood of the series at the given params
+
+        Parameters:
+            params: [omega, alpha, beta]
+
+        Returns:
+            negative log likelihood
+        """
         return _nllgauss(self._y, params, self._v_init)
 
     @cached_property
     def vs(self) -> np.ndarray:
-        """property: estimated conditional variance, same shape as y"""
+        """conditional variance based on the fit parameters.
+        Must call the fit method first before accessing this property
+
+        Returns:
+            estimated conditional variance at each time point
+        """
         assert self._is_fit
         return _get_vs(self._y, self.params, sig2_init=self._v_init)
 
     @cached_property
     def std_resids(self) -> np.ndarray:
-        """property: estimated standardized residual"""
+        """standardized residual based on the fit parameters.
+        Must call the fit method first before accessing this property
+
+        Returns:
+            estimated standardized residual at each time point
+        """
         assert self._is_fit
         return self._y / np.sqrt(self.vs)
 
     def forecast_vs(self, horizon: int) -> np.ndarray:
-        """forecast conditional variance in the horizon"""
+        """forecast conditional variance in the horizon (future)
+
+        Parameters:
+            horizon: forecast horizon
+
+        Returns:
+            forecasted conditional variance
+        """
         assert self._is_fit
         return _make_fcst_vs(self.params, self.vs[-1], self._y[-1], horizon)
 
     def simulate(
         self,
-        horizon: int,  # path length
-        method: Literal[
-            "bootstrap", "simulate"
-        ] = "simulate",  # "bootstrap" resamples from past std_resids; "simulate" simulates gaussian nosie
-        n_rep=1_000,  # number of repetitions
-        seed=42,
+        horizon: int,
+        method: Literal["bootstrap", "simulate"] = "simulate",
+        n_rep: int = 1_000,
+        seed: int = 42,
     ) -> np.ndarray:
+        """simulate paths from the fitted model
+
+
+        Parameters:
+            horizon: path length
+            method: "bootstrap" or "simulate"
+            n_rep: number of repetitions
+            seed: random seed
+
+        Returns:
+            simulated paths
+        """
         assert self._is_fit
         if method == "bootstrap":
             np.random.seed(seed)
