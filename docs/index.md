@@ -1,13 +1,13 @@
 # archette
 
-Let's build arch-like models from scractch. 
+Let's build arch-like models from scratch. 
 
 This includes model specification, maximum likelihood estimation, etc. 
 
-The current implementation is with `numpy` for array manipulations, `scipy` for optimization of objectives, 
+The current implementation is to use `numpy` for array manipulations, `scipy` for optimization of objectives, 
 and `numba` for acceleration. 
 
-TODO: swap `numpy`, `scipy` with `jax` and optimization with by hand in place of the high level API of `scipy.optimize`.   
+TODO: reduce dependency to  `jax` alone, with optimization done by hand (gradient descent and the likes) in place of the high level API of `scipy.optimize`.   
 
 ## API Reference
 
