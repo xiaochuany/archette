@@ -154,7 +154,7 @@ class GARCH:
 
         Parameters:
             horizon: path length
-            method: "bootstrap" or "simulate"
+            method: "bootstrap" or "simulate" (generate new noise)
             n_rep: number of repetitions
             seed: random seed
 
