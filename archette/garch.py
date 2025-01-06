@@ -8,6 +8,8 @@ import numpy as np
 from numba import njit
 from scipy.optimize import minimize
 
+import jax
+
 
 def _get_vs(y: np.ndarray, params: np.ndarray, sig2_init: float) -> np.ndarray:
     """
