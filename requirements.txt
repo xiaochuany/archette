@@ -1,0 +1,11 @@
+importlib-metadata==8.5.0
+jax==0.4.30
+jaxlib==0.4.30
+llvmlite==0.36.0
+ml-dtypes==0.5.1
+numba==0.53.1
+numpy==2.0.2
+opt-einsum==3.4.0
+scipy==1.13.1
+setuptools==75.7.0
+zipp==3.21.0
